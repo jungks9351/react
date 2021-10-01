@@ -1,0 +1,20 @@
+{
+  "lists": [
+    {
+      "id": 1,
+      "todo": "JavaScript"
+    },
+    {
+      "id": 2,
+      "todo": "React"
+    },
+    {
+      "id": 3,
+      "todo": "NodeJS"
+    },
+    {
+      "id": 4,
+      "todo": "안녕"
+    }
+  ]
+}
