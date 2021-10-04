@@ -5,10 +5,20 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import './index.css';
+
+import { store } from './redux/store';
+import { Provider } from 'react-redux';
+
+import { sagaMiddleware, rootSaga } from './redux/store';
+
+sagaMiddleware.run(rootSaga);
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Provider store={store}>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </Provider>,
   document.getElementById('root')
 );
 

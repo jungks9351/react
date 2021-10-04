@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { addTodo } from '../redux/modules/todos';
+import { useDispatch } from 'react-redux';
 
 const AddTodo = ({ lists, setLists }) => {
+  const dispatch = useDispatch();
   const [value, setValue] = useState('');
   const changeValue = (e) => {
     setValue((prev) => e.target.value);
@@ -12,6 +15,7 @@ const AddTodo = ({ lists, setLists }) => {
     const newItem = { id: lists.length + 1, todo: value };
     axios.post('http://localhost:4000/lists', newItem);
     setLists([...lists, newItem]);
+    dispatch(addTodo(newItem));
   };
 
   return (

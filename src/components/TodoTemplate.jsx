@@ -4,8 +4,11 @@ import AddTodo from './AddTodo';
 import TodoHeader from './TodoHeader';
 import TodoList from './TodoList';
 import axios from 'axios';
+import { loadTodos } from '../redux/modules/todos';
+import { useDispatch } from 'react-redux';
 
 const TodoTemplate = () => {
+  const dispatch = useDispatch();
   const [lists, setLists] = useState([]);
   console.log(lists);
   const reqList = async () => {
@@ -14,6 +17,7 @@ const TodoTemplate = () => {
   };
   useEffect(() => {
     reqList();
+    dispatch(loadTodos());
   }, []);
 
   return (
