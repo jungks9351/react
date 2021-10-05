@@ -1,32 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import AddTodo from './AddTodo';
 import TodoHeader from './TodoHeader';
 import TodoList from './TodoList';
-import axios from 'axios';
-import { loadTodos } from '../redux/modules/todos';
+
+import { loadTodos } from '../../redux/modules/todos';
 import { useDispatch } from 'react-redux';
 
 const TodoTemplate = () => {
   const dispatch = useDispatch();
-  const [lists, setLists] = useState([]);
-  console.log(lists);
-  const reqList = async () => {
-    const { data: lists } = await axios.get('http://localhost:4000/lists');
-    setLists(lists);
+  const history = useHistory();
+  const location = useLocation();
+  console.log(location);
+
+  const moveUserPage = () => {
+    // 1. hook useHistory 사용
+
+    history.push('/users');
   };
+
   useEffect(() => {
-    reqList();
     dispatch(loadTodos());
-  }, []);
+  }, [dispatch]);
 
   return (
     <TodoWrapper>
       <TodoHeader />
       <main>
-        <AddTodo lists={lists} setLists={setLists} />
-        <TodoList lists={lists} setLists={setLists} />
+        <AddTodo />
+        <TodoList />
       </main>
+      <button onClick={moveUserPage}>로그아웃</button>
+      {/* // 2. Link component 사용 */}
+      {/* <Link to='/users'>이동</Link> */}
     </TodoWrapper>
   );
 };

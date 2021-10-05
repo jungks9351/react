@@ -9,20 +9,7 @@ import {
 //초기상태
 
 const initialState = {
-  todoList: [
-    {
-      id: 1,
-      todo: 'JavaScript',
-    },
-    {
-      id: 2,
-      todo: 'React',
-    },
-    {
-      id: 3,
-      todo: 'NodeJS',
-    },
-  ],
+  todoList: null,
   error: null,
   loading: false,
 };
@@ -66,33 +53,59 @@ export function* todoSaga() {
 const todos = handleActions(
   {
     [LOADTODOS]: (state, action) => {
-      return { ...state, loading: true };
+      return { ...state, loading: true, error: null };
     },
     [LOADTODOS_SUCCESS]: (state, action) => {
-      return { ...state, todoList: [...state.todoList, action.payload] };
+      return {
+        ...state,
+        todoList: action.payload,
+        loading: false,
+      };
     },
     [LOADTODOS_FAILURE]: (state, action) => {
-      console.log('실패');
+      return { ...state, error: action.payload, loading: false };
     },
 
     [ADDTODO]: (state, action) => {
-      return { ...state, todoList: [...state.todoList, action.payload] };
+      return { ...state, error: null, loading: true };
     },
-    [ADDTODO_SUCCESS]: (state, action) => {
-      console.log('성공');
+    [ADDTODO_SUCCESS]: (state, { payload: newItem }) => {
+      // console.log(state);
+      return {
+        ...state,
+        todoList: [...state.todoList, newItem],
+        loading: false,
+      };
     },
-    [ADDTODO_FAILURE]: (state, action) => {
-      console.log('실패');
+    [ADDTODO_FAILURE]: (state, { payload: error }) => {
+      return {
+        ...state,
+        error,
+        loading: false,
+      };
     },
-    [DELETETODO]: (state, action) => ({
-      ...state,
-      todoList: state.todoList.filter((item) => action.payload !== item.id),
-    }),
+    [DELETETODO]: (state, action) => {
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    },
     [DELETETODO_SUCCESS]: (state, action) => {
-      console.log('성공');
+      return {
+        ...state,
+        todoList: [...state.todoList].filter((item) => {
+          return item.id !== action.payload;
+        }),
+        loading: false,
+      };
     },
-    [DELETETODO_FAILURE]: (state, action) => {
-      console.log('실패');
+    [DELETETODO_FAILURE]: (state, { payload: error }) => {
+      return {
+        ...state,
+        error,
+        loading: false,
+      };
     },
   },
   initialState
