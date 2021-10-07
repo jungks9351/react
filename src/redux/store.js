@@ -7,12 +7,13 @@ import users from './modules/users';
 import { all } from 'redux-saga/effects';
 import createSagaMiddleware from 'redux-saga';
 import { todoSaga } from './modules/todos';
+import { userSaga } from './modules/users';
 
 const rootReducer = combineReducers({ todos, users });
 export const sagaMiddleware = createSagaMiddleware();
 
 export function* rootSaga() {
-  yield all([todoSaga()]);
+  yield all([todoSaga(), userSaga()]);
 }
 
 export const store = createStore(

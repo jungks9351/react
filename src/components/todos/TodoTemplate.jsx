@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import AddTodo from './AddTodo';
 import TodoHeader from './TodoHeader';
@@ -7,17 +7,16 @@ import TodoList from './TodoList';
 
 import { loadTodos } from '../../redux/modules/todos';
 import { useDispatch } from 'react-redux';
+import { logout } from '../../redux/modules/users';
 
 const TodoTemplate = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const location = useLocation();
-  console.log(location);
 
   const moveUserPage = () => {
-    // 1. hook useHistory 사용
+    dispatch(logout());
 
-    history.push('/users');
+    history.push('/login');
   };
 
   useEffect(() => {

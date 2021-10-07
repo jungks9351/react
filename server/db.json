@@ -12,5 +12,12 @@
       "id": 3,
       "todo": "NodeJS"
     }
+  ],
+  "members": [
+    {
+      "id": 1,
+      "userId": "jungjin",
+      "userPw": "1234qwer"
+    }
   ]
 }
