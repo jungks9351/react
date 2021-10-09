@@ -23,9 +23,15 @@ const TodoTemplate = () => {
     history.push('/login');
   };
 
-  const handleModal = (e) => {
-    console.log(e.target);
-    setModal((modal) => !modal);
+  const openModal = (e) => {
+    setModal(true);
+  };
+
+  const closeModal = ({ target }) => {
+    const currEl = target;
+    if (currEl === modalEl.current || currEl.classList.contains('close-btn')) {
+      setModal(false);
+    }
   };
 
   useEffect(() => {
@@ -36,11 +42,14 @@ const TodoTemplate = () => {
     <>
       {modal && (
         <Modal>
-          <TodoModal ref={modalEl} onClick={handleModal}>
+          <Overlay ref={modalEl} onClick={closeModal}>
             <div className='modal-content'>
-              <button onClick={handleModal}>닫기</button>
+              <div>내용</div>
+              <button className='close-btn' onClick={closeModal}>
+                닫기
+              </button>
             </div>
-          </TodoModal>
+          </Overlay>
         </Modal>
       )}
       <TodoWrapper>
@@ -52,7 +61,9 @@ const TodoTemplate = () => {
         <button onClick={moveUserPage}>로그아웃</button>
         {/* // 2. Link component 사용 */}
         {/* <Link to='/users'>이동</Link> */}
-        <button onClick={handleModal}>Modal</button>
+        <button className='modal-btn' onClick={openModal}>
+          Modal
+        </button>
       </TodoWrapper>
     </>
   );
@@ -74,9 +85,12 @@ const TodoWrapper = styled.div`
     align-items: center;
     flex-direction: column;
   }
+  .modal-btn {
+    margin-top: 30px;
+  }
 `;
 
-const TodoModal = styled.div`
+const Overlay = styled.div`
   position: absolute;
   left: 0;
   top: 0;
@@ -87,6 +101,7 @@ const TodoModal = styled.div`
   align-items: center;
   background-color: rgba(0, 0, 0, 0.3);
   .modal-content {
+    position: relative;
     width: 500px;
     height: 500px;
     font-size: 50px;
@@ -95,6 +110,11 @@ const TodoModal = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .close-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 `;
 
