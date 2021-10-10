@@ -4,6 +4,11 @@ import ErrorBox from '../common/ErrorBox';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../redux/modules/users';
 import { useHistory } from 'react-router-dom';
+import Modal from '../common/Modal';
+import Overlay from '../common/Overlay';
+import useModal from '../../hooks/useModal';
+import { AiOutlineCloseSquare } from 'react-icons/ai';
+import Map from '../common/Map';
 
 const LoginTemplate = () => {
   const dispatch = useDispatch();
@@ -17,6 +22,7 @@ const LoginTemplate = () => {
     memberId: null,
     memberPw: null,
   });
+  const [modal, openModal, closeModal] = useModal();
 
   const onChange = useCallback(
     (e) => {
@@ -42,6 +48,19 @@ const LoginTemplate = () => {
 
   return (
     <LoginForm>
+      <button onClick={openModal}>Modal</button>
+      {modal && (
+        <Modal>
+          <Overlay closeModal={closeModal}>
+            <ModalContents>
+              <Map />
+              <AiOutlineCloseSquare className='close-btn' onClick={closeModal}>
+                닫기
+              </AiOutlineCloseSquare>
+            </ModalContents>
+          </Overlay>
+        </Modal>
+      )}
       <h2>Login</h2>
       <form onSubmit={onSubmit}>
         <div className='mamberId'>
@@ -113,6 +132,20 @@ const LoginForm = styled.div`
     background-color: orange;
     width: 300px;
     height: 30px;
+  }
+`;
+
+const ModalContents = styled.div`
+  width: 500px;
+  height: 500px;
+  background-color: #fff;
+  position: relative;
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 40px;
+    cursor: pointer;
   }
 `;
 

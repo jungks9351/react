@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import AddTodo from './AddTodo';
@@ -9,29 +9,32 @@ import { loadTodos } from '../../redux/modules/todos';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../redux/modules/users';
 import Modal from '../common/Modal';
+import useModal from '../../hooks/useModal';
+import Overlay from '../common/Overlay';
+
+import { AiOutlineCloseSquare } from 'react-icons/ai';
+import { Avatar } from 'antd';
 
 const TodoTemplate = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const modalEl = useRef();
 
-  const [modal, setModal] = useState(false);
+  const [modal, openModal, closeModal] = useModal();
 
+  // const openModal = (e) => {
+  //   setModal(true);
+  // };
+
+  // const closeModal = ({ target }) => {
+  //   const currEl = target;
+  //   if (currEl === modalEl.current || currEl.classList.contains('close-btn')) {
+  //     setModal(false);
+  //   }
+  // };
   const moveUserPage = () => {
     dispatch(logout());
 
     history.push('/login');
-  };
-
-  const openModal = (e) => {
-    setModal(true);
-  };
-
-  const closeModal = ({ target }) => {
-    const currEl = target;
-    if (currEl === modalEl.current || currEl.classList.contains('close-btn')) {
-      setModal(false);
-    }
   };
 
   useEffect(() => {
@@ -42,13 +45,14 @@ const TodoTemplate = () => {
     <>
       {modal && (
         <Modal>
-          <Overlay ref={modalEl} onClick={closeModal}>
-            <div className='modal-content'>
-              <div>내용</div>
-              <button className='close-btn' onClick={closeModal}>
-                닫기
-              </button>
-            </div>
+          <Overlay closeModal={closeModal}>
+            <ModalWrapper>
+              <Avatar icon={<AiOutlineCloseSquare />} />
+              <AiOutlineCloseSquare
+                className='close-btn'
+                onClick={closeModal}
+              />
+            </ModalWrapper>
           </Overlay>
         </Modal>
       )}
@@ -90,31 +94,23 @@ const TodoWrapper = styled.div`
   }
 `;
 
-const Overlay = styled.div`
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
+const ModalWrapper = styled.div`
+  position: relative;
+  width: 500px;
+  height: 500px;
+  font-size: 50px;
+  background-color: #fff;
+  border-radius: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.3);
-  .modal-content {
-    position: relative;
-    width: 500px;
-    height: 500px;
-    font-size: 50px;
-    background-color: #fff;
-    border-radius: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+
   .close-btn {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 10px;
+    right: 10px;
+    font-size: 40px;
+    cursor: pointer;
   }
 `;
 
