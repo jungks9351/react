@@ -1,9 +1,14 @@
 import React from 'react';
 import TodoTemplate from '../components/todos/TodoTemplate';
+import { useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 const TodoPage = () => {
-  // token이 있으면 보여준다.
-  return <TodoTemplate />;
+  const token = useSelector(({ users }) => {
+    return users.token;
+  });
+
+  return <>{token ? <TodoTemplate /> : <Redirect to='/login' />}</>;
 };
 
 export default TodoPage;
